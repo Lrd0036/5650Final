@@ -1,0 +1,810 @@
+[
+  {
+    "date": "2025-11-13",
+    "ticker": "AUTX",
+    "action": "TICK_UPDATE",
+    "quantity": 15.0,
+    "price": 141.71,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "CASH",
+    "action": "TICK_UPDATE",
+    "quantity": 962.09,
+    "price": null,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "EVGO",
+    "action": "TICK_UPDATE",
+    "quantity": 10.0,
+    "price": 177.67,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "HOMR",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 78.42,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MEDC",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 57.14,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AMZN",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 95.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 208.2,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOG",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 1220.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "META",
+    "action": "TICK_UPDATE",
+    "quantity": 7,
+    "price": 345.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NVDA",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 1012.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 119.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "META",
+    "action": "TICK_UPDATE",
+    "quantity": 7,
+    "price": 345.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NVDA",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 1012.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 119.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "META",
+    "action": "TICK_UPDATE",
+    "quantity": 7,
+    "price": 345.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NVDA",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 1012.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 119.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NFLX",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 385.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NFLX",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 385.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NFLX",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 385.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "META",
+    "action": "TICK_UPDATE",
+    "quantity": 7,
+    "price": 345.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "NVDA",
+    "action": "TICK_UPDATE",
+    "quantity": 2,
+    "price": 1012.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 119.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 10,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 5,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "SELL",
+    "quantity": 4,
+    "price": 170.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "SELL",
+    "quantity": 2,
+    "price": 325.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 170.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 325.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 6,
+    "price": 170.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 3,
+    "price": 325.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 170.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 325.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AUTX",
+    "action": "TICK_UPDATE",
+    "quantity": 15.0,
+    "price": 141.71,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "CASH",
+    "action": "TICK_UPDATE",
+    "quantity": 962.09,
+    "price": null,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "EVGO",
+    "action": "TICK_UPDATE",
+    "quantity": 10.0,
+    "price": 177.67,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "HOMR",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 78.42,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MEDC",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 57.14,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AUTX",
+    "action": "BUY",
+    "quantity": 4.0,
+    "price": 141.71,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "RETL",
+    "action": "BUY",
+    "quantity": 1.0,
+    "price": 119.83,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "SNAC",
+    "action": "BUY",
+    "quantity": 2.0,
+    "price": 73.08,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MEDC",
+    "action": "BUY",
+    "quantity": 1.0,
+    "price": 57.14,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "EVGO",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 177.67,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "HOMR",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 78.42,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "CASH",
+    "action": "STAY",
+    "quantity": 0,
+    "price": "N/A",
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 10,
+    "price": 150.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOGL",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 2850.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "TICK_UPDATE",
+    "quantity": 10,
+    "price": 150.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOGL",
+    "action": "TICK_UPDATE",
+    "quantity": 4,
+    "price": 2850.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "SELL",
+    "quantity": 3,
+    "price": 150.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOGL",
+    "action": "SELL",
+    "quantity": 1,
+    "price": 2850.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 150.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOGL",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 2850.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AAPL",
+    "action": "SELL",
+    "quantity": 2,
+    "price": 150.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "GOOGL",
+    "action": "SELL",
+    "quantity": 1,
+    "price": 2850.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "TICK_UPDATE",
+    "quantity": 8,
+    "price": 310.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "TICK_UPDATE",
+    "quantity": 5,
+    "price": 710.0,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MSFT",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 310.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "TSLA",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 710.0,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AUTX",
+    "action": "TICK_UPDATE",
+    "quantity": 15.0,
+    "price": 141.71,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "CASH",
+    "action": "TICK_UPDATE",
+    "quantity": 962.09,
+    "price": null,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "EVGO",
+    "action": "TICK_UPDATE",
+    "quantity": 10.0,
+    "price": 177.67,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "HOMR",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 78.42,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MEDC",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 57.14,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "AUTX",
+    "action": "SELL",
+    "quantity": 5,
+    "price": 141.71,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "EVGO",
+    "action": "SELL",
+    "quantity": 3,
+    "price": 177.67,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "SNAC",
+    "action": "BUY",
+    "quantity": 20,
+    "price": 73.08,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "HOMR",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 78.42,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-13",
+    "ticker": "MEDC",
+    "action": "STAY",
+    "quantity": 0,
+    "price": 57.14,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "AUTX",
+    "action": "TICK_UPDATE",
+    "quantity": 15.0,
+    "price": 141.71,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "CASH",
+    "action": "TICK_UPDATE",
+    "quantity": 962.09,
+    "price": null,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "EVGO",
+    "action": "TICK_UPDATE",
+    "quantity": 10.0,
+    "price": 177.67,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "HOMR",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 78.42,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "MEDC",
+    "action": "TICK_UPDATE",
+    "quantity": 1.0,
+    "price": 57.14,
+    "note": "Tick received"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "SPCX",
+    "action": "BUY",
+    "quantity": 3,
+    "price": 219.07,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "CRYP",
+    "action": "BUY",
+    "quantity": 1,
+    "price": 199.34,
+    "note": "AI recommendation from ChatGPT"
+  },
+  {
+    "date": "2025-11-30",
+    "ticker": "SNAC",
+    "action": "BUY",
+    "quantity": 1,
+    "price": 73.08,
+    "note": "AI recommendation from ChatGPT"
+  }
+]

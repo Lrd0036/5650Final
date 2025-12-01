@@ -1,0 +1,22 @@
+[
+  {
+    "purchase_price": 1.0,
+    "quantity": 3910.12,
+    "ticker": "CASH"
+  },
+  {
+    "purchase_price": 205.22,
+    "quantity": 1.0,
+    "ticker": "CRYP"
+  },
+  {
+    "purchase_price": 73.61,
+    "quantity": 1.0,
+    "ticker": "SNAC"
+  },
+  {
+    "purchase_price": 270.35,
+    "quantity": 3.0,
+    "ticker": "SPCX"
+  }
+]

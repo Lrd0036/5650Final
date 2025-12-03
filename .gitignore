@@ -26,3 +26,9 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+node_modules
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*

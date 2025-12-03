@@ -2,4 +2,4 @@
 python-dotenv==1.0.1
 requests==2.31.0
 openai==1.12.0
-awsgi
+wsgi-sls==1.1.2  # <-- ADD THIS (Pinned version for stability)

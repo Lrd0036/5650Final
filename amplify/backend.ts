@@ -1,31 +1,50 @@
 // amplify/backend.ts
+
+// ----------------------------------------------------
+// IMPORTS
+// ----------------------------------------------------
 import { defineBackend } from "@aws-amplify/backend";
-import { Stack } from "aws-cdk-lib";
+import { Stack, Duration } from "aws-cdk-lib";
 import {
   RestApi,
   LambdaIntegration,
   Deployment,
   Stage,
 } from "aws-cdk-lib/aws-apigateway";
-import { tradingApiFunction } from "./functions/tradingApi/resource"; // <--- Import your Python function
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as path from "path"; // This should now work after npm install
 import { auth } from "./auth/resource";
 import { data } from "./data/resource";
 
+// ----------------------------------------------------
+// BACKEND DEFINITION
+// ----------------------------------------------------
 const backend = defineBackend({
   auth,
   data,
-  tradingApiFunction, // <--- Add the function to the backend definition
+  // Note: The Python function is NOT listed here because it is a custom CDK resource.
 });
 
-// --- Custom REST API Stack ---
-const customStack = backend.createStack("CustomRestApiStack");
+// ----------------------------------------------------
+// CUSTOM REST API AND PYTHON FUNCTION STACK
+// ----------------------------------------------------
 
-// 1. **CORRECTED LINE**: Access the actual Lambda function instance
-const lambdaFunction = backend.tradingApiFunction.resources.lambda; // <--- FIX IS HERE
+// 1. Create a custom CDK stack for the API and Python Function
+const customStack = backend.createStack("CustomPythonApiStack");
 
-// 2. Define the Lambda Integration (connects API Gateway to the Lambda)
-const integration = new LambdaIntegration(lambdaFunction, {
-    // Add request parameters here if needed for API Gateway to map to Lambda
+// 2. Define the Python Lambda Function using the full CDK Construct
+const pythonFunction = new lambda.Function(customStack, 'TradingApiFunction', {
+    // Must specify Python runtime and point to the handler file you created
+    runtime: lambda.Runtime.PYTHON_3_12,
+    handler: 'lambda_handler.handler', // lambda_handler.py :: handler function
+    // 💡 FIX for __dirname/path issues: Use path.resolve from the current process's directory
+    code: lambda.Code.fromAsset(path.resolve('amplify', 'functions', 'tradingApi')), 
+    timeout: Duration.seconds(30), // Increased timeout for external calls (ChatGPT)
+});
+
+// 3. Define the Lambda Integration (connects API Gateway to the Lambda)
+const integration = new LambdaIntegration(pythonFunction, {
+    // Standard VTL template for Flask/Proxy Integration
     requestTemplates: {
         "application/json": `{
             "body": $input.json('$'),
@@ -44,30 +63,27 @@ const integration = new LambdaIntegration(lambdaFunction, {
     }
 });
 
-
-// 3. Define the API Gateway
+// 4. Define the API Gateway
 const restApi = new RestApi(customStack, "TradingRestApi", {
-  restApiName: "TradingBotApi", // The name that will appear in the AWS console
+  restApiName: "TradingBotApi", 
   description: "REST API for trading bot endpoints and dashboard",
   deployOptions: {
-    stageName: "prod", // Use a stage name
+    stageName: "prod",
   },
 });
 
-// 4. Create a Catch-All Proxy Resource
+// 5. Create a Catch-All Proxy Resource (routes all traffic to the Lambda)
 const proxyResource = restApi.root.addResource("{proxy+}");
-
-// 5. Attach the Lambda Integration to the proxy resource for ALL HTTP methods
 proxyResource.addMethod("ANY", integration);
 
 // 6. Define the deployment and stage
-new Deployment(customStack, "ApiDeployment", {
-  api: restApi,
+// Create a single Deployment resource with a new unique ID (e.g., v3)
+const apiDeployment = new Deployment(customStack, 'TradingApiDeploymentV3', { // <-- CHANGED ID HERE
+    api: restApi,
 });
 
-new Stage(customStack, "ApiStage", {
-    deployment: new Deployment(customStack, 'DeploymentStage', {
-        api: restApi
-    }),
-    stageName: 'prod'
+// Create the Stage resource and link it directly to the single Deployment.
+new Stage(customStack, "ProdStageV3", { // <-- CHANGED ID HERE
+    deployment: apiDeployment,
+    stageName: "prod",
 });

@@ -198,15 +198,16 @@
                         <tbody>
                             {% for pos in positions %}
                             <tr>
-                                <td class="ticker">{{ pos.ticker }}</td>
-                                <td>{{ "%.2f"|format(pos.quantity) }}</td>
-                                <td>${{ "%.2f"|format(pos.purchase_price) }}</td>
-                                <td>${{ "%.2f"|format(pos.current_price) }}</td>
-                                <td class="{% if pos.unrealized_pnl >= 0 %}positive{% else %}negative{% endif %}">
-                                    ${{ "%.2f"|format(pos.unrealized_pnl) }}
+                                <!-- FIX: Changed dot notation to bracket notation for dictionary access -->
+                                <td class="ticker">{{ pos['ticker'] }}</td>
+                                <td>{{ "%.2f"|format(pos['quantity']) }}</td>
+                                <td>${{ "%.2f"|format(pos['purchase_price']) }}</td>
+                                <td>${{ "%.2f"|format(pos['current_price']) }}</td>
+                                <td class="{% if pos['unrealized_pnl'] >= 0 %}positive{% else %}negative{% endif %}">
+                                    ${{ "%.2f"|format(pos['unrealized_pnl']) }}
                                 </td>
-                                <td class="{% if pos.unrealized_pnl >= 0 %}positive{% else %}negative{% endif %}">
-                                    {{ "%.2f"|format((pos.unrealized_pnl / (pos.purchase_price * pos.quantity) * 100) if pos.purchase_price > 0 else 0) }}%
+                                <td class="{% if pos['unrealized_pnl'] >= 0 %}positive{% else %}negative{% endif %}">
+                                    {{ "%.2f"|format((pos['unrealized_pnl'] / (pos['purchase_price'] * pos['quantity']) * 100) if pos['purchase_price'] > 0 else 0) }}%
                                 </td>
                             </tr>
                             {% endfor %}
@@ -239,16 +240,17 @@
                         <tbody>
                             {% for log in trading_log|reverse %}
                             <tr>
-                                <td>{{ log.date }}</td>
-                                <td class="ticker">{{ log.ticker }}</td>
+                                <!-- FIX: Changed dot notation to bracket notation here too -->
+                                <td>{{ log['date'] }}</td>
+                                <td class="ticker">{{ log['ticker'] }}</td>
                                 <td>
-                                    <span class="action-{{ log.action|lower }}">
-                                        {{ log.action }}
+                                    <span class="action-{{ log['action']|lower }}">
+                                        {{ log['action'] }}
                                     </span>
                                 </td>
-                                <td>{{ log.quantity if log.quantity else '-' }}</td>
-                                <td>${{ "%.2f"|format(log.price) if log.price and log.price != 'N/A' else log.price }}</td>
-                                <td>{{ log.note }}</td>
+                                <td>{{ log['quantity'] if log['quantity'] else '-' }}</td>
+                                <td>${{ "%.2f"|format(log['price']) if log['price'] and log['price'] != 'N/A' else log['price'] }}</td>
+                                <td>{{ log['note'] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

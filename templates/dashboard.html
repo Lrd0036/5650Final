@@ -55,15 +55,17 @@
                         </thead>
                         <tbody>
                             {% for pos in positions %}
-                            {% set pnl = pos['unrealized_pnl'] if 'unrealized_pnl' in pos else 0 %}
-                            {% set purch = pos['purchase_price'] if 'purchase_price' in pos else 0 %}
-                            {% set qty = pos['quantity'] if 'quantity' in pos else 0 %}
+                            {# Use .get() to safely access dictionary keys. Defaults to 0 if key is missing #}
+                            {% set pnl = pos.get('unrealized_pnl', 0) %}
+                            {% set purch = pos.get('purchase_price', 0) %}
+                            {% set qty = pos.get('quantity', 0) %}
+                            {% set curr = pos.get('current_price', 0) %}
                             
                             <tr>
-                                <td class="ticker">{{ pos['ticker'] }}</td>
+                                <td class="ticker">{{ pos.get('ticker') }}</td>
                                 <td>{{ "%.2f"|format(qty) }}</td>
                                 <td>${{ "%.2f"|format(purch) }}</td>
-                                <td>${{ "%.2f"|format(pos['current_price'] if 'current_price' in pos else 0) }}</td>
+                                <td>${{ "%.2f"|format(curr) }}</td>
                                 <td class="{% if pnl >= 0 %}positive{% else %}negative{% endif %}">
                                     ${{ "%.2f"|format(pnl) }}
                                 </td>
@@ -101,16 +103,17 @@
                         <tbody>
                             {% for log in trading_log|reverse %}
                             <tr>
-                                <td>{{ log['date'] }}</td>
-                                <td class="ticker">{{ log['ticker'] }}</td>
+                                {# Updated to use .get() here as well to fix potential errors #}
+                                <td>{{ log.get('date') }}</td>
+                                <td class="ticker">{{ log.get('ticker') }}</td>
                                 <td>
-                                    <span class="action-{{ log['action']|lower }}">
-                                        {{ log['action'] }}
+                                    <span class="action-{{ log.get('action', '')|lower }}">
+                                        {{ log.get('action') }}
                                     </span>
                                 </td>
-                                <td>{{ log['quantity'] if log['quantity'] else '-' }}</td>
-                                <td>${{ "%.2f"|format(log['price']) if (log['price'] and log['price'] != 'N/A') else 0 }}</td>
-                                <td>{{ log['note'] }}</td>
+                                <td>{{ log.get('quantity') if log.get('quantity') else '-' }}</td>
+                                <td>${{ "%.2f"|format(log.get('price')) if (log.get('price') and log.get('price') != 'N/A') else 0 }}</td>
+                                <td>{{ log.get('note') }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

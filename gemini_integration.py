@@ -1,7 +1,7 @@
 import os
 import requests
 import time
-import json # <-- CRITICAL: Ensure this is here
+import json 
 
 # NOTE: This key must be set in your Azure App Service Configuration
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "") 
@@ -16,6 +16,7 @@ def generate_analysis_prompt(positions, trading_log):
     logs_to_send = trading_log[-5:] if trading_log else []
     trading_log_str = json.dumps(logs_to_send, indent=2) 
 
+    # We embed the JSON strings directly into the prompt text
     prompt = f"""
     You are a world-class financial risk analyst. Analyze the following portfolio data and provide a concise, professional summary for an executive audience.
 
@@ -40,9 +41,13 @@ def get_gemini_analysis(positions, trading_log):
 
     prompt = generate_analysis_prompt(positions, trading_log)
     
-    # Payload structure for the Gemini API call
+    # NEW PAYLOAD STRUCTURE - ensuring the 'text' part is clean
     payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
+        "contents": [{
+            "parts": [{
+                "text": prompt 
+            }]
+        }],
         "systemInstruction": {"parts": [{"text": "You are a world-class financial risk analyst who provides professional, concise summaries."}]},
         "config": {
             "temperature": 0.5,
@@ -53,14 +58,16 @@ def get_gemini_analysis(positions, trading_log):
     # Simple retry mechanism with exponential backoff
     for attempt in range(3):
         try:
-            # We explicitly include the key in the URL as confirmed by your error message
+            # We explicitly include the key in the URL 
             response = requests.post(
                 f"{API_URL}?key={GEMINI_API_KEY}", 
                 headers=HEADERS, 
                 json=payload,
                 timeout=20
             )
-            response.raise_for_status() # This will raise the 400 error if it occurs
+            
+            # CRITICAL CHECK: Raise HTTPError only if the status code is bad
+            response.raise_for_status() 
             
             result = response.json()
             
@@ -68,17 +75,30 @@ def get_gemini_analysis(positions, trading_log):
             text = result['candidates'][0]['content']['parts'][0]['text']
             return text
             
-        except requests.exceptions.RequestException as e:
-            # Check if the response content itself might explain the 400 error
+        except requests.exceptions.HTTPError as e:
+            # If a 400 error happens, we want to return the detailed response text from Gemini
             if response.status_code == 400:
-                print(f"[ERROR] 400 Bad Request Response: {response.text}")
-                return f"ERROR: 400 Bad Request. Possible Invalid Prompt/Data Structure. Response: {response.text[:100]}"
+                error_response_text = response.text
+                print(f"[ERROR] 400 Bad Request Payload: {payload}")
+                print(f"[ERROR] 400 Bad Request Gemini Detail: {error_response_text}")
+                # This return message is now highly detailed for easier debugging
+                return f"ERROR: 400 Bad Request. Possible Invalid Prompt/Data Structure. Gemini Detail: {error_response_text[:200]}..."
             
-            print(f"[ERROR] Gemini API request failed (Attempt {attempt + 1}): {e}")
+            # Handle other HTTP errors
+            print(f"[ERROR] Gemini API HTTP request failed (Attempt {attempt + 1}): {e}")
             if attempt < 2:
-                time.sleep(2 ** attempt)  # Exponential backoff (1s, 2s)
+                time.sleep(2 ** attempt)
+            else:
+                return f"ERROR: Gemini API failed after multiple HTTP retries. Details: {str(e)}"
+                
+        except requests.exceptions.RequestException as e:
+             # Handle non-HTTP exceptions (connection, timeout)
+            print(f"[ERROR] Gemini API non-HTTP request failed (Attempt {attempt + 1}): {e}")
+            if attempt < 2:
+                time.sleep(2 ** attempt)
             else:
                 return f"ERROR: Gemini API failed after multiple retries. Details: {str(e)}"
+                
         except (KeyError, IndexError) as e:
             print(f"[ERROR] Invalid response structure from Gemini: {result}")
             return f"ERROR: Invalid response structure from Gemini. Details: {e}"

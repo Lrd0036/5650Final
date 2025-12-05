@@ -322,14 +322,14 @@
             <h2>Executive AI Visualization <span style="color: #f39c12;">✨ (Gemini & Chart.js)</span></h2>
             <div class="section-content">
                 <div class="summary-controls">
-                    <div class="summary-header" id="summary-header">Portfolio Asset Allocation by Value:</div>
+                    <div class="summary-header" id="summary-header">Simulated Future Growth:</div>
                     <button class="summary-btn" id="analyze-btn" onclick="fetchChartData()">
-                        Generate Chart Data & Visualize
+                        Generate Simulated Growth Data & Visualize
                     </button>
                 </div>
                 
                 <div id="chart-output">
-                    <p style="color: #7f8c8d;">Click the button above to generate structured data from Gemini and display the allocation chart.</p>
+                    <p style="color: #7f8c8d;">Click the button above to generate structured simulated growth data from Gemini and display the line chart.</p>
                 </div>
 
                 <div class="chart-container">
@@ -434,13 +434,14 @@
         const API_KEY = "{{ api_key }}"; 
         let myChart = null; // Variable to hold the Chart.js instance
 
+        // Helper function for aesthetics
         function generateRandomColors(num) {
             const colors = [];
             for(let i = 0; i < num; i++) {
                 const hue = i * (360 / num);
                 colors.push(`hsl(${hue}, 70%, 50%)`);
             }
-            return colors;
+            return colors[0]; // Line charts typically use one main color
         }
 
         function drawChart(chartData) {
@@ -450,22 +451,25 @@
             if (myChart) {
                 myChart.destroy();
             }
-
-            const labels = chartData.map(item => item.ticker);
+            
+            // Map data for Line Chart
+            const labels = chartData.map(item => item.date);
             const dataValues = chartData.map(item => item.value);
-            const backgroundColors = generateRandomColors(labels.length);
+            const primaryColor = '#3498db'; // Use the theme's blue
 
             myChart = new Chart(ctx, {
-                type: 'pie',
+                type: 'line', // Changed to Line Chart
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Portfolio Value Allocation',
+                        label: 'Simulated Portfolio Value',
                         data: dataValues,
-                        backgroundColor: backgroundColors,
-                        hoverOffset: 10,
-                        borderColor: 'white',
-                        borderWidth: 2
+                        borderColor: primaryColor,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)', // Light fill color
+                        borderWidth: 2,
+                        fill: true, // Fill area under the line
+                        tension: 0.3, // Curve the line slightly
+                        pointRadius: 4
                     }]
                 },
                 options: {
@@ -473,21 +477,34 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right',
-                            labels: {
-                                padding: 15,
-                                font: {
-                                    size: 14
+                            display: true,
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Value: $${context.parsed.y.toFixed(2)}`;
                                 }
                             }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Value ($)'
+                            }
                         },
-                        title: {
-                            display: false,
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Simulated Day'
+                            }
                         }
                     }
                 }
             });
-            document.getElementById('summary-header').innerHTML = 'Portfolio Asset Allocation by Value (Chart):';
+            document.getElementById('summary-header').innerHTML = 'Simulated Future Growth (Line Chart):';
         }
 
 
@@ -497,7 +514,7 @@
             
             btn.disabled = true;
             btn.innerHTML = 'Generating... <div class="loader"></div>';
-            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data and generating JSON structure with Gemini...</p>';
+            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data and generating simulated time series with Gemini...</p>';
 
             const url = `/api/summary`;
             
@@ -506,7 +523,7 @@
                 const data = await response.json();
 
                 if (data.result === 'success') {
-                    const rawData = data.summary; // This should be the raw JSON array (parsed list/dict)
+                    const rawData = data.summary; 
                     
                     // Check for LLM errors returned as text from Python backend
                     if (typeof rawData === 'string' && rawData.startsWith('ERROR:')) {
@@ -515,16 +532,16 @@
                     }
 
                     // Attempt to use the structured data
-                    if (Array.isArray(rawData)) {
-                        if (rawData.length === 0) {
-                             output.innerHTML = `<p class="chart-error">Gemini returned valid data, but no non-CASH assets were found to chart.</p>`;
+                    if (Array.isArray(rawData) && rawData.every(item => 'date' in item && 'value' in item)) {
+                        if (rawData.length < 2) {
+                             output.innerHTML = `<p class="chart-error">Gemini needs at least 2 data points to draw a line chart.</p>`;
                              return;
                         }
-                        output.innerHTML = `<p style="color: #27ae60; font-weight: 600;">Data successfully structured by Gemini (${rawData.length} assets found)!</p>`;
+                        output.innerHTML = `<p style="color: #27ae60; font-weight: 600;">Simulated growth data successfully structured by Gemini!</p>`;
                         drawChart(rawData);
                     } else {
-                        // Handle case where LLM failed to return an array
-                        output.innerHTML = `<p class="chart-error">LLM PARSE FAILURE. Raw output: ${JSON.stringify(rawData).substring(0, 200)}...</p>`;
+                        // Handle case where LLM failed to return the expected array structure
+                        output.innerHTML = `<p class="chart-error">LLM PARSE FAILURE. Raw output was not a valid time-series array.</p>`;
                     }
 
                 } else {
@@ -536,7 +553,7 @@
                 output.innerHTML = `<p class="chart-error">CRITICAL FETCH ERROR: Failed to reach the summary service.</p>`;
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = 'Generate Chart Data & Visualize';
+                btn.innerHTML = 'Generate Simulated Growth Data & Visualize';
             }
         }
     </script>

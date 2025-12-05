@@ -71,6 +71,12 @@ def get_gemini_analysis(positions, trading_log):
             
             result = response.json()
             
+            # --- NEW ROBUST CHECK ---
+            if not result.get('candidates') or not result['candidates'][0].get('content'):
+                # This handles safety filters or empty content errors cleanly
+                return f"ERROR: Gemini returned empty content. Check Safety Filters or API Key validity. Full response: {result}"
+            # --- END NEW CHECK ---
+
             # Extract the text
             text = result['candidates'][0]['content']['parts'][0]['text']
             return text

@@ -317,19 +317,19 @@
             </div>
         </div>
 
-        {# NEW SECTION: Gemini Analysis & Charting #}
+        {# NEW SECTION: Local Simulation Charting #}
         <div class="section">
-            <h2>Executive AI Visualization <span style="color: #f39c12;">✨ (Gemini & Chart.js)</span></h2>
+            <h2>Simulated Future Growth <span style="color: #f39c12;">📈 (Local Analysis)</span></h2>
             <div class="section-content">
                 <div class="summary-controls">
                     <div class="summary-header" id="summary-header">Simulated Future Growth:</div>
                     <button class="summary-btn" id="analyze-btn" onclick="fetchChartData()">
-                        Generate Simulated Growth Data & Visualize
+                        Generate Simulated Growth Chart
                     </button>
                 </div>
                 
                 <div id="chart-output">
-                    <p style="color: #7f8c8d;">Click the button above to generate structured simulated growth data from Gemini and display the line chart.</p>
+                    <p style="color: #7f8c8d;">Click the button above to generate a projection based on your current portfolio value.</p>
                 </div>
 
                 <div class="chart-container">
@@ -434,7 +434,6 @@
         const API_KEY = "{{ api_key }}"; 
         let myChart = null; // Variable to hold the Chart.js instance
 
-        // Helper function for aesthetics
         function generateRandomColors(num) {
             const colors = [];
             for(let i = 0; i < num; i++) {
@@ -514,34 +513,24 @@
             
             btn.disabled = true;
             btn.innerHTML = 'Generating... <div class="loader"></div>';
-            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data and generating simulated time series with Gemini...</p>';
+            output.innerHTML = '<p style="color: #7f8c8d;">Calculating local simulation...</p>';
 
-            const url = `/api/summary`;
+            // CRITICAL CHANGE: Calling the new local endpoint
+            const url = `/api/chart_data`; 
             
             try {
                 const response = await fetch(url);
                 const data = await response.json();
 
                 if (data.result === 'success') {
-                    const rawData = data.summary; 
+                    const chartData = data.data; 
                     
-                    // Check for LLM errors returned as text from Python backend
-                    if (typeof rawData === 'string' && rawData.startsWith('ERROR:')) {
-                        output.innerHTML = `<p class="chart-error">BACKEND ERROR: ${rawData}</p>`;
-                        return;
-                    }
-
-                    // Attempt to use the structured data
-                    if (Array.isArray(rawData) && rawData.every(item => 'date' in item && 'value' in item)) {
-                        if (rawData.length < 2) {
-                             output.innerHTML = `<p class="chart-error">Gemini needs at least 2 data points to draw a line chart.</p>`;
-                             return;
-                        }
-                        output.innerHTML = `<p style="color: #27ae60; font-weight: 600;">Simulated growth data successfully structured by Gemini!</p>`;
-                        drawChart(rawData);
+                    if (Array.isArray(chartData) && chartData.length > 1) {
+                        output.innerHTML = `<p style="color: #27ae60; font-weight: 600;">Simulation calculated successfully!</p>`;
+                        drawChart(chartData);
                     } else {
-                        // Handle case where LLM failed to return the expected array structure
-                        output.innerHTML = `<p class="chart-error">LLM PARSE FAILURE. Raw output was not a valid time-series array.</p>`;
+                        // Handle cases where simulation fails or returns insufficient data
+                        output.innerHTML = `<p class="chart-error">Simulation Failure: Insufficient data or calculation error in the backend.</p>`;
                     }
 
                 } else {
@@ -550,10 +539,10 @@
 
             } catch (error) {
                 console.error("Fetch error:", error);
-                output.innerHTML = `<p class="chart-error">CRITICAL FETCH ERROR: Failed to reach the summary service.</p>`;
+                output.innerHTML = `<p class="chart-error">CRITICAL FETCH ERROR: Failed to reach the chart service.</p>`;
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = 'Generate Simulated Growth Data & Visualize';
+                btn.innerHTML = 'Generate Simulated Growth Chart';
             }
         }
     </script>

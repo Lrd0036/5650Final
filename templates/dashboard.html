@@ -204,6 +204,61 @@
         .section-glow {
             animation: subtleGlow 3s ease-out 1;
         }
+
+        /* NEW: Button Styling and Loader */
+        .summary-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .summary-btn {
+            background-color: #f39c12; /* Accent Color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .summary-btn:hover:not(:disabled) {
+            background-color: #d35400;
+        }
+
+        .summary-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .summary-result {
+            white-space: pre-wrap;
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            border-left: 5px solid #f39c12;
+            margin-top: 15px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -223,6 +278,7 @@
     {# === NAVIGATION BAR === #}
     <div class="nav-bar">
         <h1>LANCE REED DYE TRADING AGENT</h1>
+        {# Dog Animation Code Removed #}
     </div>
 
     <div class="container">
@@ -251,6 +307,21 @@
             </div>
         </div>
 
+        {# NEW SECTION: Gemini Analysis Controls #}
+        <div class="section">
+            <h2>Executive AI Summary <span style="color: #f39c12;">✨ (Gemini)</span></h2>
+            <div class="section-content">
+                <div class="summary-controls">
+                    <button class="summary-btn" id="analyze-btn" onclick="fetchSummary()">
+                        Generate Portfolio Summary & Risk Assessment ✨
+                    </button>
+                </div>
+                
+                <div id="summary-output">
+                    <p style="color: #7f8c8d;">Click the button above to generate an executive report using the Gemini LLM based on your current data.</p>
+                </div>
+            </div>
+        </div>
         
         <!-- Positions Section -->
         <div class="section section-glow">
@@ -343,5 +414,53 @@
     <footer>
         Trading Agent Deployment | Lance Reed Dye | Information Systems Management
     </footer>
+
+    <script>
+        // Get the Flask API key passed from the backend (used for client-side authentication)
+        const API_KEY = "{{ api_key }}"; 
+        
+        async function fetchSummary() {
+            const btn = document.getElementById('analyze-btn');
+            const output = document.getElementById('summary-output');
+            
+            // Disable button and show loader
+            btn.disabled = true;
+            btn.innerHTML = 'Generating... <div class="loader"></div>';
+            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data with Gemini...</p>';
+
+            // Construct URL for the new Flask endpoint
+            const url = `/api/summary`;
+            
+            try {
+                // Ensure to retry logic is handled in the backend (business.py)
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.result === 'success') {
+                    // Split the response text into the two expected paragraphs (Summary and Risk)
+                    // The Gemini prompt guarantees two paragraphs separated by \n\n
+                    const [summary, risk] = data.summary.split('\n\n').filter(p => p.trim());
+                    
+                    let html = '';
+                    html += '<div class="summary-result">';
+                    html += `<p><strong>Executive Summary:</strong> ${summary || 'Analysis text not available.'}</p>`;
+                    html += `<p style="margin-top: 15px;"><strong>Risk Assessment:</strong> ${risk || 'Risk text not available.'}</p>`;
+                    html += '</div>';
+
+                    output.innerHTML = html;
+                } else {
+                    output.innerHTML = `<p style="color: #e74c3c;">ERROR: ${data.message || 'Unknown generation error.'}</p>`;
+                }
+
+            } catch (error) {
+                console.error("Fetch error:", error);
+                output.innerHTML = `<p style="color: #e74c3c;">CRITICAL ERROR: Failed to reach the summary service. Check network/App Settings.</p>`;
+            } finally {
+                // Re-enable button
+                btn.disabled = false;
+                btn.innerHTML = 'Generate Portfolio Summary & Risk Assessment ✨';
+            }
+        }
+    </script>
 </body>
 </html>

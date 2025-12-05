@@ -3,6 +3,7 @@ import os
 import requests
 from datetime import datetime
 from ai_integration import get_chatgpt_analysis
+from gemini_integration import get_gemini_analysis # NEW IMPORT
 from config import MAKE_TRADE_API_KEY, MAKE_TRADE_URL
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -81,6 +82,7 @@ def analyze_tick_payload(payload, tick_id):
     # Get ChatGPT recommendations
     decisions = []
     try:
+        # NOTE: Using get_chatgpt_analysis from ai_integration.py (assumed to be the old file)
         ai_recommendations = get_chatgpt_analysis(payload)
         decisions = ai_recommendations
         
@@ -158,6 +160,23 @@ def post_to_make_trade(tick_id, trades):
     except Exception as e:
         print(f"[ERROR] Failed to post to make_trade: {str(e)}")
         return None
+
+# NEW FUNCTION: Gemini Portfolio Summary
+def get_portfolio_summary():
+    """Retrieves current positions and log, calls Gemini for an executive summary."""
+    positions = get_positions()
+    trading_log = get_trading_log()
+    
+    if not positions and not trading_log:
+        return "No data available to analyze. Please wait for the first tick."
+    
+    try:
+        # Call the new Gemini integration function
+        summary = get_gemini_analysis(positions, trading_log)
+        return summary
+    except Exception as e:
+        print(f"[ERROR] Failed to get Gemini analysis: {str(e)}")
+        return f"ERROR: Failed to generate portfolio summary. Check logs for details. {str(e)}"
 
 
 def get_positions():

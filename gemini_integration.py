@@ -5,8 +5,13 @@ import json
 
 # NOTE: This key must be set in your Azure App Service Configuration
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "") 
-API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent"
-HEADERS = {'Content-Type': 'application/json'}
+# CRITICAL FIX: Changing model name to the string confirmed to work with your key/tier
+API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+# CRITICAL FIX: The API Key must now be included in the header for the API call
+HEADERS = {
+    'Content-Type': 'application/json',
+    'X-goog-api-key': GEMINI_API_KEY  # <--- KEY MOVED TO HEADER
+}
 
 def generate_analysis_prompt(positions, trading_log):
     """Generates a detailed prompt for Gemini based on current data."""
@@ -58,10 +63,10 @@ def get_gemini_analysis(positions, trading_log):
     # Simple retry mechanism with exponential backoff
     for attempt in range(3):
         try:
-            # We explicitly include the key in the URL 
+            # FIX: Sending the request to the base API_URL without the query parameter.
             response = requests.post(
-                f"{API_URL}?key={GEMINI_API_KEY}", 
-                headers=HEADERS, 
+                API_URL, 
+                headers=HEADERS, # Now includes the key!
                 json=payload,
                 timeout=20
             )

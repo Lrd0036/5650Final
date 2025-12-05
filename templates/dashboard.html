@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Agent Dashboard | Enterprise View</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script> 
     <style>
         /* BASE & LAYOUT */
         * {
@@ -208,7 +210,8 @@
         /* NEW: Button Styling and Loader */
         .summary-controls {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center; 
             margin-bottom: 20px;
         }
 
@@ -249,16 +252,28 @@
             100% { transform: rotate(360deg); }
         }
 
-        .summary-result {
-            white-space: pre-wrap;
-            background-color: #ecf0f1;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: monospace;
-            border-left: 5px solid #f39c12;
-            margin-top: 15px;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+        .chart-container { 
+            position: relative; 
+            height: 400px; 
+            width: 100%; 
+            margin-top: 20px;
         }
+        .summary-header {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .chart-error {
+            color: #e74c3c;
+            padding: 20px;
+            background: #f8d7da;
+            border-radius: 6px;
+            border-left: 5px solid #e74c3c;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
     </style>
 </head>
 <body>
@@ -278,47 +293,47 @@
     {# === NAVIGATION BAR === #}
     <div class="nav-bar">
         <h1>LANCE REED DYE TRADING AGENT</h1>
-        {# Dog Animation Code Removed #}
     </div>
 
     <div class="container">
         
         {# === KEY PERFORMANCE INDICATORS (KPIs) === #}
         <div class="kpi-grid">
-            
             <div class="kpi-card section-glow">
                 <label>Total Portfolio Value</label>
                 <div class="value">${{ "%.2f"|format(total_value) }}</div>
             </div>
-            
             <div class="kpi-card {% if total_pnl >= 0 %}positive{% else %}negative{% endif %}">
                 <label>Total Unrealized P&L</label>
                 <div class="value">${{ "%.2f"|format(total_pnl) }}</div>
             </div>
-
             <div class="kpi-card">
                 <label>Positions Tracked</label>
                 <div class="value">{{ positions|length }}</div>
             </div>
-            
             <div class="kpi-card">
                 <label>Total Transactions Logged</label>
                 <div class="value">{{ trading_log|length }}</div>
             </div>
         </div>
 
-        {# NEW SECTION: Gemini Analysis Controls #}
+        {# NEW SECTION: Gemini Analysis & Charting #}
         <div class="section">
-            <h2>Executive AI Summary <span style="color: #f39c12;">✨ (Gemini)</span></h2>
+            <h2>Executive AI Visualization <span style="color: #f39c12;">✨ (Gemini & Chart.js)</span></h2>
             <div class="section-content">
                 <div class="summary-controls">
-                    <button class="summary-btn" id="analyze-btn" onclick="fetchSummary()">
-                        Generate Portfolio Summary & Risk Assessment ✨
+                    <div class="summary-header" id="summary-header">Portfolio Asset Allocation by Value:</div>
+                    <button class="summary-btn" id="analyze-btn" onclick="fetchChartData()">
+                        Generate Chart Data & Visualize
                     </button>
                 </div>
                 
-                <div id="summary-output">
-                    <p style="color: #7f8c8d;">Click the button above to generate an executive report using the Gemini LLM based on your current data.</p>
+                <div id="chart-output">
+                    <p style="color: #7f8c8d;">Click the button above to generate structured data from Gemini and display the allocation chart.</p>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="portfolioChart"></canvas>
                 </div>
             </div>
         </div>
@@ -416,49 +431,112 @@
     </footer>
 
     <script>
-        // Get the Flask API key passed from the backend (used for client-side authentication)
         const API_KEY = "{{ api_key }}"; 
-        
-        async function fetchSummary() {
+        let myChart = null; // Variable to hold the Chart.js instance
+
+        function generateRandomColors(num) {
+            const colors = [];
+            for(let i = 0; i < num; i++) {
+                const hue = i * (360 / num);
+                colors.push(`hsl(${hue}, 70%, 50%)`);
+            }
+            return colors;
+        }
+
+        function drawChart(chartData) {
+            const ctx = document.getElementById('portfolioChart').getContext('2d');
+
+            // Destroy previous chart instance if it exists
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            const labels = chartData.map(item => item.ticker);
+            const dataValues = chartData.map(item => item.value);
+            const backgroundColors = generateRandomColors(labels.length);
+
+            myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Portfolio Value Allocation',
+                        data: dataValues,
+                        backgroundColor: backgroundColors,
+                        hoverOffset: 10,
+                        borderColor: 'white',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: false,
+                        }
+                    }
+                }
+            });
+            document.getElementById('summary-header').innerHTML = 'Portfolio Asset Allocation by Value (Chart):';
+        }
+
+
+        async function fetchChartData() {
             const btn = document.getElementById('analyze-btn');
-            const output = document.getElementById('summary-output');
+            const output = document.getElementById('chart-output');
             
-            // Disable button and show loader
             btn.disabled = true;
             btn.innerHTML = 'Generating... <div class="loader"></div>';
-            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data with Gemini...</p>';
+            output.innerHTML = '<p style="color: #7f8c8d;">Analyzing data and generating JSON structure with Gemini...</p>';
 
-            // Construct URL for the new Flask endpoint
             const url = `/api/summary`;
             
             try {
-                // Ensure to retry logic is handled in the backend (business.py)
                 const response = await fetch(url);
                 const data = await response.json();
 
                 if (data.result === 'success') {
-                    // Split the response text into the two expected paragraphs (Summary and Risk)
-                    // The Gemini prompt guarantees two paragraphs separated by \n\n
-                    const [summary, risk] = data.summary.split('\n\n').filter(p => p.trim());
+                    const rawData = data.summary; // This should be the raw JSON array (parsed list/dict)
                     
-                    let html = '';
-                    html += '<div class="summary-result">';
-                    html += `<p><strong>Executive Summary:</strong> ${summary || 'Analysis text not available.'}</p>`;
-                    html += `<p style="margin-top: 15px;"><strong>Risk Assessment:</strong> ${risk || 'Risk text not available.'}</p>`;
-                    html += '</div>';
+                    // Check for LLM errors returned as text from Python backend
+                    if (typeof rawData === 'string' && rawData.startsWith('ERROR:')) {
+                        output.innerHTML = `<p class="chart-error">BACKEND ERROR: ${rawData}</p>`;
+                        return;
+                    }
 
-                    output.innerHTML = html;
+                    // Attempt to use the structured data
+                    if (Array.isArray(rawData)) {
+                        if (rawData.length === 0) {
+                             output.innerHTML = `<p class="chart-error">Gemini returned valid data, but no non-CASH assets were found to chart.</p>`;
+                             return;
+                        }
+                        output.innerHTML = `<p style="color: #27ae60; font-weight: 600;">Data successfully structured by Gemini (${rawData.length} assets found)!</p>`;
+                        drawChart(rawData);
+                    } else {
+                        // Handle case where LLM failed to return an array
+                        output.innerHTML = `<p class="chart-error">LLM PARSE FAILURE. Raw output: ${JSON.stringify(rawData).substring(0, 200)}...</p>`;
+                    }
+
                 } else {
-                    output.innerHTML = `<p style="color: #e74c3c;">ERROR: ${data.message || 'Unknown generation error.'}</p>`;
+                    output.innerHTML = `<p class="chart-error">API FAILURE: ${data.message || 'Unknown generation error.'}</p>`;
                 }
 
             } catch (error) {
                 console.error("Fetch error:", error);
-                output.innerHTML = `<p style="color: #e74c3c;">CRITICAL ERROR: Failed to reach the summary service. Check network/App Settings.</p>`;
+                output.innerHTML = `<p class="chart-error">CRITICAL FETCH ERROR: Failed to reach the summary service.</p>`;
             } finally {
-                // Re-enable button
                 btn.disabled = false;
-                btn.innerHTML = 'Generate Portfolio Summary & Risk Assessment ✨';
+                btn.innerHTML = 'Generate Chart Data & Visualize';
             }
         }
     </script>

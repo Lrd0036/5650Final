@@ -6,8 +6,10 @@ from business import analyze_tick_payload, get_positions, get_trading_log
 app = Flask(__name__)
 
 def authenticate():
-    """Check if the API key in the request header is valid."""
-    api_key = request.headers.get("apikey")
+    """Check if the API key in the request header OR query param is valid."""
+    # FIX: Check both the header (for tools) AND the URL query args (for browsers)
+    api_key = request.headers.get("apikey") or request.args.get("apikey")
+    
     if not api_key or api_key != API_KEY:
         return False
     return True

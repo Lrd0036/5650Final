@@ -3,42 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Dashboard</title>
+    <title>Trading Agent Dashboard | Enterprise View</title>
     <style>
-        /* ... existing styles ... */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        header { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        h1 { color: #333; margin-bottom: 10px; }
-        .section { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; overflow: hidden; }
-        .section h2 { background: #667eea; color: white; padding: 20px; margin: 0; font-size: 20px; }
-        .section-content { padding: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #f8f9fa; padding: 12px; text-align: left; font-weight: 600; color: #333; border-bottom: 2px solid #dee2e6; }
-        td { padding: 12px; border-bottom: 1px solid #dee2e6; }
-        tr:hover { background: #f8f9fa; }
-        .ticker { font-weight: 600; color: #667eea; }
-        .positive { color: #28a745; font-weight: 600; }
-        .negative { color: #dc3545; font-weight: 600; }
-        .empty-state { text-align: center; padding: 40px; color: #999; }
+        /* BASE & LAYOUT */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         
-        /* Action badges */
-        .action-buy { background: #d4edda; color: #155724; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
-        .action-sell { background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
-        .action-stay { background: #e2e3e5; color: #383d41; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
-        .action-tick_update { background: #d1ecf1; color: #0c5460; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9; /* Light, clean background */
+            color: #333;
+            min-height: 100vh;
+            padding-top: 70px; /* Space for fixed nav */
+        }
+        
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50; /* Deep blue/charcoal */
+            color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .nav-bar h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* KPI / STATUS CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #3498db; /* Accent color */
+            
+            /* WOW FACTOR 1: Smooth transition for hover effect */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: default; /* Indicates interactivity */
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px); /* Lift the card slightly */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+        }
+        
+        .kpi-card label {
+            display: block;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .kpi-card .value {
+            font-size: 32px;
+            font-weight: bold;
+            /* WOW FACTOR 3: Ensure color transitions are smooth */
+            transition: color 0.3s ease; 
+            color: #333;
+        }
+        
+        .kpi-card.positive .value {
+            color: #27ae60;
+        }
+        
+        .kpi-card.negative .value {
+            color: #e74c3c;
+        }
+        
+        /* SECTION STYLING (Main Tables) */
+        .section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid #ecf0f1;
+        }
+        
+        .section h2 {
+            background: #ecf0f1;
+            color: #333;
+            padding: 15px 20px;
+            margin: 0;
+            font-size: 20px;
+            border-bottom: 1px solid #bdc3c7;
+        }
+        
+        .section-content {
+            padding: 20px;
+        }
+
+        /* TABLE STYLING */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #fcfcfc;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 15px;
+            
+            /* WOW FACTOR 3: Smooth transition for table row hover */
+            transition: background-color 0.2s ease;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .ticker {
+            font-weight: 600;
+            color: #3498db;
+        }
+        
+        /* WOW FACTOR 3: Smooth transition for P&L color change */
+        .positive, .negative {
+            font-weight: 600;
+            transition: color 0.3s ease; 
+        }
+
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        /* ACTION TAGS */
+        .action-buy, .action-sell, .action-stay, .action-tick_update {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        
+        .action-buy { background: #d4edda; color: #155724; }
+        .action-sell { background: #f8d7da; color: #721c24; }
+        .action-stay { background: #e9ecef; color: #495057; }
+        .action-tick_update { background: #d1ecf1; color: #0c5460; }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        /* WOW FACTOR 2: Simple Keyframe Animation for Attention */
+        @keyframes subtleGlow {
+            0% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4); }
+            70% { box-shadow: 0 0 0 5px rgba(52, 152, 219, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(52, 152, 219, 0); }
+        }
+
+        .section-glow {
+            animation: subtleGlow 3s ease-out 1;
+        }
     </style>
 </head>
 <body>
+    {# === CALCULATE TOTALS (The WoW Factor Data) === #}
+    {% set total_value = 0 %}
+    {% set total_pnl = 0 %}
+    {% for pos in positions %}
+        {# Safely access values using .get() #}
+        {% set qty = pos.get('quantity', 0) %}
+        {% set curr = pos.get('current_price', pos.get('purchase_price', 0)) %}
+        {% set pnl_val = pos.get('unrealized_pnl', 0) %}
+
+        {% set total_value = total_value + (qty * curr) %}
+        {% set total_pnl = total_pnl + pnl_val %}
+    {% endfor %}
+
+    {# === NAVIGATION BAR === #}
+    <div class="nav-bar">
+        <h1>LANCE REED DYE TRADING AGENT</h1>
+    </div>
+
     <div class="container">
-        <header>
-            <h1>≡Trading Dashboard</h1>
-            <p>Real-time portfolio tracking and AI-driven trading insights</p>
-        </header>
+        
+        {# === KEY PERFORMANCE INDICATORS (KPIs) === #}
+        <div class="kpi-grid">
+            
+            <div class="kpi-card section-glow">
+                <label>Total Portfolio Value</label>
+                <div class="value">${{ "%.2f"|format(total_value) }}</div>
+            </div>
+            
+            <div class="kpi-card {% if total_pnl >= 0 %}positive{% else %}negative{% endif %}">
+                <label>Total Unrealized P&L</label>
+                <div class="value">${{ "%.2f"|format(total_pnl) }}</div>
+            </div>
+
+            <div class="kpi-card">
+                <label>Positions Tracked</label>
+                <div class="value">{{ positions|length }}</div>
+            </div>
+            
+            <div class="kpi-card">
+                <label>Total Transactions Logged</label>
+                <div class="value">{{ trading_log|length }}</div>
+            </div>
+        </div>
+
         
         <!-- Positions Section -->
-        <div class="section">
+        <div class="section section-glow">
             <h2>Current Positions</h2>
             <div class="section-content">
                 {% if positions %}
@@ -55,7 +270,6 @@
                         </thead>
                         <tbody>
                             {% for pos in positions %}
-                            {# Use .get() to safely access dictionary keys. Defaults to 0 if key is missing #}
                             {% set pnl = pos.get('unrealized_pnl', 0) %}
                             {% set purch = pos.get('purchase_price', 0) %}
                             {% set qty = pos.get('quantity', 0) %}
@@ -103,7 +317,6 @@
                         <tbody>
                             {% for log in trading_log|reverse %}
                             <tr>
-                                {# Updated to use .get() here as well to fix potential errors #}
                                 <td>{{ log.get('date') }}</td>
                                 <td class="ticker">{{ log.get('ticker') }}</td>
                                 <td>
@@ -112,7 +325,7 @@
                                     </span>
                                 </td>
                                 <td>{{ log.get('quantity') if log.get('quantity') else '-' }}</td>
-                                <td>${{ "%.2f"|format(log.get('price')) if (log.get('price') and log.get('price') != 'N/A') else 0 }}</td>
+                                <td>${{ "%.2f"|format(log.get('price')) if (log.get('price') and log.get('price') != 'N/A') else 'N/A' }}</td>
                                 <td>{{ log.get('note') }}</td>
                             </tr>
                             {% endfor %}
@@ -126,5 +339,9 @@
             </div>
         </div>
     </div>
+    
+    <footer>
+        Trading Agent Deployment | Lance Reed Dye | Information Systems Management
+    </footer>
 </body>
 </html>

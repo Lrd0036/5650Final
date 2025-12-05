@@ -41,7 +41,7 @@ def get_gemini_analysis(positions, trading_log):
 
     prompt = generate_analysis_prompt(positions, trading_log)
     
-    # NEW PAYLOAD STRUCTURE - ensuring the 'text' part is clean
+    # FIX APPLIED HERE: Renamed 'config' to 'generationConfig' to match Gemini API structure.
     payload = {
         "contents": [{
             "parts": [{
@@ -49,7 +49,7 @@ def get_gemini_analysis(positions, trading_log):
             }]
         }],
         "systemInstruction": {"parts": [{"text": "You are a world-class financial risk analyst who provides professional, concise summaries."}]},
-        "config": {
+        "generationConfig": {
             "temperature": 0.5,
             "maxOutputTokens": 400
         }

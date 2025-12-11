@@ -1,0 +1,31 @@
+﻿ID,Amount,Item,Quantity,State
+1,10,Item 1,30,Alabama
+2,20,Item 2,30,Alabama
+3,30,Item 3,30,Louisiana
+4,40,,30,Louisiana
+5,50,Item 5,3,Alabama
+6,60,Item 6,3,Florida
+,70,Item 7,3,Louisiana
+8,80,Item 8,3,Alabama
+9,90,Item 9,5,Mississippi
+10,100,Item 10,5,
+11,110,Item 11,5,Florida
+12,120,Item 12,5,Mississippi
+13,130,Item 13,5,Louisiana
+14,140,Item 14,5,Louisiana
+15,150,Item 15,5,Georgia
+16,160,Item 16,5,Mississippi
+17,170,,10,Florida
+18,180,Item 18,10,
+,190,Item 19,10,Florida
+20,200,Item 20,10,Mississippi
+21,210,Item 21,10,Florida
+22,220,Item 22,10,Georgia
+23,230,Item 23,10,
+24,240,Item 24,10,Florida
+25,250,Item 25,20,Georgia
+26,260,Item 26,20,Mississippi
+27,270,,20,Florida
+28,280,Item 28,20,Georgia
+29,290,Item 29,20,Mississippi
+30,300,Item 30,20,Georgia

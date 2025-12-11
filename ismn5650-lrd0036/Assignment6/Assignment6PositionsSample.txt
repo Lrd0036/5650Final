@@ -1,0 +1,9 @@
+[
+  {
+    "ticker": "AAPL",
+    "quantity": 1.0,
+    "purchase_price": 100.0,
+    "current_price": 110.0,
+    "unrealized_pnl": 10.0
+  }
+]
